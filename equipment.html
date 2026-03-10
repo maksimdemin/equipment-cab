@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Инженерная шпаргалка</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef2f7;
+margin:0;
+padding:0;
+}
+
+header{
+background:#1f2937;
+color:white;
+padding:20px;
+text-align:center;
+font-size:22px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+.search{
+width:100%;
+padding:12px;
+font-size:16px;
+margin-bottom:20px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.card{
+background:white;
+padding:16px;
+margin-bottom:10px;
+border-radius:6px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+button{
+padding:8px 14px;
+background:#2563eb;
+border:none;
+color:white;
+border-radius:4px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+.modal{
+display:none;
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+}
+
+.modal-content{
+background:white;
+max-width:700px;
+margin:80px auto;
+padding:25px;
+border-radius:6px;
+}
+
+.close{
+float:right;
+cursor:pointer;
+font-size:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+Инженерная шпаргалка
+</header>
+
+<div class="container">
+
+<input class="search" placeholder="Поиск оборудования..." onkeyup="searchEquipment(this.value)">
+
+<div id="equipmentList"></div>
+
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+
+<span class="close" onclick="closeModal()">✖</span>
+
+<div id="instructionText"></div>
+
+</div>
+</div>
+
+<script>
+
+const equipment = [
+
+{name:"Голосовой шлюз Addpack AP1100F", id:"addpack"},
+{name:"Модем ЗССС Evolution X7", id:"x7"},
+{name:"Portserver", id:"portserver"},
+{name:"Коммутатор Nortel 2526T", id:"nortel"},
+{name:"ШРД Infinet", id:"infinet"},
+{name:"Медиаконвертер Zelax", id:"zelax"},
+{name:"БС TETRA", id:"tetra"},
+{name:"VoIP шлюз TAU", id:"tau"},
+{name:"Pasolink", id:"pasolink"},
+{name:"Юстировка ЗССС", id:"align"},
+{name:"Контроллер ЭЛЕСИ", id:"elesi"}
+
+]
+
+const instructions = {
+
+addpack:
+`<h2>Addpack AP1100F</h2>
+1. Подключить Ethernet<br>
+2. Открыть WEB интерфейс<br>
+3. IP: 192.168.1.1<br>
+4. Логин admin<br>
+5. Настроить SIP`,
+
+x7:
+`<h2>Evolution X7</h2>
+1. Подключиться к WEB<br>
+2. IP 192.168.0.1<br>
+3. Настроить спутник<br>
+4. Проверить уровень сигнала`,
+
+portserver:
+`<h2>Portserver</h2>
+1. Подключиться через Telnet<br>
+2. Настроить IP<br>
+3. Настроить serial ports`,
+
+nortel:
+`<h2>Nortel 2526T</h2>
+1. Подключение через console<br>
+2. Настроить VLAN<br>
+3. Проверить trunk`,
+
+infinet:
+`<h2>Infinet</h2>
+1. Открыть WEB<br>
+2. Настроить частоту<br>
+3. Проверить RSSI`,
+
+zelax:
+`<h2>Zelax</h2>
+1. Проверить питание<br>
+2. Проверить линк<br>
+3. Проверить режим работы`,
+
+tetra:
+`<h2>БС TETRA</h2>
+1. Проверить синхронизацию<br>
+2. Проверить канал`,
+
+tau:
+`<h2>TAU</h2>
+1. Настроить SIP<br>
+2. Проверить регистрацию`,
+
+pasolink:
+`<h2>Pasolink</h2>
+1. Подключиться через WEB<br>
+2. Проверить RSSI<br>
+3. Проверить BER`,
+
+align:
+`<h2>Юстировка ЗССС</h2>
+1. Включить измеритель<br>
+2. Медленно вращать антенну<br>
+3. Найти максимум сигнала`,
+
+elesi:
+`<h2>Контроллер ЭЛЕСИ</h2>
+1. Подключиться через WEB<br>
+2. Проверить состояние модулей`
+
+}
+
+function renderList(list){
+
+const container=document.getElementById("equipmentList")
+container.innerHTML=""
+
+list.forEach(e=>{
+
+container.innerHTML+=`
+<div class="card">
+<div>${e.name}</div>
+<button onclick="showInstruction('${e.id}')">Инструкция</button>
+</div>
+`
+
+})
+
+}
+
+function showInstruction(id){
+
+document.getElementById("modal").style.display="block"
+document.getElementById("instructionText").innerHTML=instructions[id]
+
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none"
+}
+
+function searchEquipment(text){
+
+text=text.toLowerCase()
+
+const filtered=equipment.filter(e=>e.name.toLowerCase().includes(text))
+
+renderList(filtered)
+
+}
+
+renderList(equipment)
+
+</script>
+
+</body>
+</html>
