@@ -117,95 +117,22 @@ font-size:20px;
 
 <script>
 
-const equipment = [
+let equipment = []
 
-{name:"Голосовой шлюз Addpack AP1100F", id:"addpack"},
-{name:"Модем ЗССС Evolution X7", id:"x7"},
-{name:"Portserver", id:"portserver"},
-{name:"Коммутатор Nortel 2526T", id:"nortel"},
-{name:"ШРД Infinet", id:"infinet"},
-{name:"Медиаконвертер Zelax", id:"zelax"},
-{name:"БС TETRA", id:"tetra"},
-{name:"VoIP шлюз TAU", id:"tau"},
-{name:"Pasolink", id:"pasolink"},
-{name:"Юстировка ЗССС", id:"align"},
-{name:"Контроллер ЭЛЕСИ", id:"elesi"}
+async function loadEquipment(){
 
-]
+const response = await fetch("equipment.json")
 
-const instructions = {
+equipment = await response.json()
 
-addpack:
-`<h2>Addpack AP1100F</h2>
-1. Подключить Ethernet<br>
-2. Открыть WEB интерфейс<br>
-3. IP: 192.168.1.1<br>
-4. Логин admin<br>
-5. Настроить SIP`,
-
-x7:
-`<h2>Evolution X7</h2>
-1. Подключиться к WEB<br>
-2. IP 192.168.0.1<br>
-3. Настроить спутник<br>
-4. Проверить уровень сигнала`,
-
-portserver:
-`<h2>Portserver</h2>
-1. Подключиться через Telnet<br>
-2. Настроить IP<br>
-3. Настроить serial ports`,
-
-nortel:
-`<h2>Nortel 2526T</h2>
-1. Подключение через console<br>
-2. Настроить VLAN<br>
-3. Проверить trunk`,
-
-infinet:
-`<h2>Infinet</h2>
-1. Открыть WEB<br>
-2. Настроить частоту<br>
-3. Проверить RSSI`,
-
-zelax:
-`<h2>Zelax</h2>
-1. Проверить питание<br>
-2. Проверить линк<br>
-3. Проверить режим работы`,
-
-tetra:
-`<h2>БС TETRA</h2>
-1. Проверить синхронизацию<br>
-2. Проверить канал`,
-
-tau:
-`<h2>TAU</h2>
-1. Настроить SIP<br>
-2. Проверить регистрацию`,
-
-pasolink:
-`<h2>Pasolink</h2>
-1. Подключиться через WEB<br>
-2. Проверить RSSI<br>
-3. Проверить BER`,
-
-align:
-`<h2>Юстировка ЗССС</h2>
-1. Включить измеритель<br>
-2. Медленно вращать антенну<br>
-3. Найти максимум сигнала`,
-
-elesi:
-`<h2>Контроллер ЭЛЕСИ</h2>
-1. Подключиться через WEB<br>
-2. Проверить состояние модулей`
+renderList(equipment)
 
 }
 
 function renderList(list){
 
 const container=document.getElementById("equipmentList")
+
 container.innerHTML=""
 
 list.forEach(e=>{
@@ -223,8 +150,12 @@ container.innerHTML+=`
 
 function showInstruction(id){
 
+const device = equipment.find(e => e.id === id)
+
 document.getElementById("modal").style.display="block"
-document.getElementById("instructionText").innerHTML=instructions[id]
+
+document.getElementById("instructionText").innerHTML =
+"<h2>"+device.name+"</h2><pre>"+device.instruction+"</pre>"
 
 }
 
@@ -242,7 +173,7 @@ renderList(filtered)
 
 }
 
-renderList(equipment)
+loadEquipment()
 
 
 if ("serviceWorker" in navigator) {
@@ -256,7 +187,7 @@ console.log("Ошибка SW:", error);
 });
 
 }
-  
+
 </script>
 
 </body>
