@@ -1,7 +1,7 @@
 {
 "name": "Инженерная шпаргалка",
 "short_name": "Шпаргалка",
-"start_url": "equipment.html",
+"start_url": "index.html",
 "display": "standalone",
 "background_color": "#1f2937",
 "theme_color": "#1f2937",
