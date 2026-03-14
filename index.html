@@ -168,7 +168,7 @@ const device = equipment.find(e => e.id === id)
 document.getElementById("modal").style.display="block"
 
 document.getElementById("instructionText").innerHTML =
-"<h2>"+device.name+"</h2><pre>"+device.instruction+"</pre>"
+"<h2>"+device.name+"</h2><pre>"+device.instruction.join('\n')+"</pre>"
 
 }
 
